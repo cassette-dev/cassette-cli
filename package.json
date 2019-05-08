@@ -1,0 +1,22 @@
+{
+  "name": "@cassette.dev/cli",
+  "version": "0.0.2",
+  "description": "Command line tool for cassette.dev",
+  "main": "cli.js",
+  "author": "Joachim Lindqvist <lindqvist.joachim@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ora": "^3.4.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "tmp": "^0.1.0",
+    "yargs": "^13.2.2"
+  },
+  "bin": {
+    "cassette": "./cli.js"
+  },
+  "scripts": {
+    "prod": "node ./cli.js",
+    "dev": "API_URL=http://localhost:9000/api node ./cli.js"
+  }
+}
