@@ -4,28 +4,14 @@ stages:
   - deploy
 
 before_script:
-  - apk --update add nodejs nodejs-npm bash python py-pip
-  - pip install awscli
-  - wget -q -O - https://cli-assets.heroku.com/install.sh | sh
-  - npm config set unsafe-perm true
-  - npm install -g yarn
-  - echo test
+  - apk --update add nodejs nodejs-npm
 
 services:
   - docker:stable-dind
 
-deploy-api-and-web:
+publish:
   stage: deploy
   when: manual
-  only:
-    - master
   script:
-    - bin/deploy-server
-
-release-clients:
-  stage: deploy
-  # when: manual
-  only:
-    - master
-  script:
-    - bin/release-clients
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+    - npm publish --access public .
