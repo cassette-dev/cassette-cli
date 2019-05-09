@@ -1,0 +1,30 @@
+image: docker:git
+
+stages:
+  - deploy
+
+before_script:
+  - apk --update add nodejs nodejs-npm bash python py-pip
+  - pip install awscli
+  - wget -q -O - https://cli-assets.heroku.com/install.sh | sh
+  - npm config set unsafe-perm true
+  - npm install -g yarn
+
+services:
+  - docker:stable-dind
+
+deploy-api-and-web:
+  stage: deploy
+  when: manual
+  only:
+    - master
+  script:
+    - bin/deploy-server
+
+release-clients:
+  stage: deploy
+  # when: manual
+  only:
+    - master
+  script:
+    - bin/release-clients
