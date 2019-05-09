@@ -9,6 +9,7 @@ before_script:
   - wget -q -O - https://cli-assets.heroku.com/install.sh | sh
   - npm config set unsafe-perm true
   - npm install -g yarn
+  - echo test
 
 services:
   - docker:stable-dind
