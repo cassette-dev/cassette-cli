@@ -10,7 +10,7 @@ class Client {
 
     constructor(token) {
         this.token = token;
-        this.baseUrl = process.env.API_URL || "https://cassette.dev/api";
+        this.baseUrl = process.env.API_URL || "https://api.cassette.dev/api";
     }
 
     url(parts) {
