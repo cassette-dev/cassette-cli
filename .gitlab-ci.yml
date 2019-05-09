@@ -17,15 +17,11 @@ services:
 deploy-api-and-web:
   stage: deploy
   when: manual
-  only:
-    - master
   script:
     - bin/deploy-server
 
 release-clients:
   stage: deploy
   # when: manual
-  only:
-    - master
   script:
     - bin/release-clients
