@@ -1,6 +1,6 @@
 {
   "name": "@cassette.dev/cassette-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Command line tool for cassette.dev",
   "main": "cli.js",
   "author": "Joachim Lindqvist <lindqvist.joachim@gmail.com>",
