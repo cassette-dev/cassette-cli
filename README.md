@@ -4,7 +4,7 @@ Cassette records your request and responses to automatically generated API docum
 
 #### Install
 
-`npm install @cassette.dev/cli`
+`npm install @cassette.dev/cassette-cli`
 
 #### Import
 
