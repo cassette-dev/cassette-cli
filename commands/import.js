@@ -52,7 +52,7 @@ class Client {
 
 }
 
-class RecordCommand {
+class ImportCommand {
     constructor(options) {
         this.options = options;
         this.client = new Client(options.projectAccessToken);
@@ -156,15 +156,15 @@ class RecordCommand {
         })        
     }
 
-    assertHasRecordings() {
+    assertHasRequestTransactions() {
         const stat = fs.statSync(this.bulkFile.name);
         if (stat.size === 0) {
-            this.ora.fail("Couldn't find any recordings after test run. Make sure you have selected a test suite with integration tests.")
+            this.ora.fail("Couldn't find any request transactions after test run. Make sure you have selected a test suite with integration tests.")
             yargs.exit(1);
         }
     }
 
-    async uploadRecording() {
+    async import() {
         try {
             await this.client.post(["revisions", this.revision.id, "episodes"], {
                 formData: {
@@ -177,7 +177,7 @@ class RecordCommand {
                     },
                 },
             });
-            this.ora.succeed("Uploaded recordings to cassette.")
+            this.ora.succeed("Imported request transactions to cassette.")
         } catch (e) {
             this.ora.fail(`Failed to upload recordings to revision ${this.revision.id} on branch ${this.options.branchName}.`)
             if (this.options.verbose) {
@@ -227,11 +227,11 @@ class RecordCommand {
             console.error(e);
             yargs.exit(1);
         }
-        this.assertHasRecordings();
-        this.ora.start("Uploading recordings to cassette.");
-        await this.uploadRecording();
+        this.assertHasRequestTransactions();
+        this.ora.start("Importing request transactions to cassette.");
+        await this.import();
         await this.completeRevision();
     }
 }
 
-module.exports = RecordCommand;
+module.exports = ImportCommand;

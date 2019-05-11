@@ -2,12 +2,12 @@
 
 const yargs = require("yargs");
 
-const recordCommand = require("./commands/record");
+const importCommand = require("./commands/import");
 
 const args = yargs
     .command(
-        'record',
-        'Start a recording session',
+        'import',
+        'Import a new revision of your API to cassette',
         {
             "project-id": {
                 number: true,
@@ -33,7 +33,7 @@ const args = yargs
     .argv;
 
 const commands = {
-    record: recordCommand,
+    import: importCommand,
 }
 
 const commandName = args._[0];
