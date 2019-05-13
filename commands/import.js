@@ -166,12 +166,12 @@ class ImportCommand {
 
     async import() {
         try {
-            await this.client.post(["revisions", this.revision.id, "episodes"], {
+            await this.client.post(["revisions", this.revision.id, "request-transactions"], {
                 formData: {
-                    episodes: {
+                    "request-transactions": {
                         value: fs.createReadStream(this.bulkFile.name),
                         options: {
-                            filename: "episodes.txt",
+                            filename: "request-transactions.txt",
                             contentType: "text/plain",
                         }
                     },
