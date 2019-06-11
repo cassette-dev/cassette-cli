@@ -1,0 +1,17 @@
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- group: cassette
+
+steps:
+  - bash: |
+      set -e
+      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      npm publish --access public .
+    displayName: "Publish package"
+    env:
+      NPM_TOKEN: $(NPM_TOKEN)
