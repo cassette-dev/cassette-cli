@@ -132,7 +132,7 @@ class ImportCommand {
                 if (this.options.verbose) {
                     this.ora.frame();
                     this.ora.clear();
-                    console.error("  " + Buffer.from(chunk).toString());
+                    console.error(">  " + Buffer.from(chunk).toString());
                 }
             });
 
@@ -213,10 +213,15 @@ class ImportCommand {
         this.revision = await this.createNewRevision();
         this.bulkFile = this.createBulkFile();
         const bulkFileSeparator = this.createBulkFileSeparator();
+
+        if (this.options.verbose) {
+            this.ora.succeed(`Created import file at: ${this.bulkFile.name}`);
+        }
+
         this.ora.succeed(`Created a new temporary revision for branch ${this.options.branchName}`);
 
         try {
-            this.ora.start(`Calling command: "${this.options.command}"`)
+            this.ora.start(`Running command: "${this.options.command}"`)
             await this.callCommand({
                 CASSETTE_RECORDING: 1,
                 CASSETTE_BULK_FILE_PATH: this.bulkFile.name,
