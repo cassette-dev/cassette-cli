@@ -188,9 +188,8 @@ class ImportCommand {
     }
 
     async completeRevision() {
-        let completeRevisionResponse;
         try {
-            completeRevisionResponse = await this.client.post(
+            await this.client.post(
                 ["revisions", this.revision.id, "complete"],
             );
         } catch (e) {
@@ -201,11 +200,9 @@ class ImportCommand {
             yargs.exit(1);
         }
 
-        if (completeRevisionResponse.body.created_new_revision) {
-            this.ora.succeed(`Completed new revision for '${this.options.branchName}' (cassette://project/${this.revision.projectId}/branch/${this.revision.branchId}/revision/${this.revision.id})`)
-        } else {
-            this.ora.info(`No changes made. Didn't create a new revision for '${this.options.branchName}'`)
-        }
+        this.ora.succeed(
+            "Revision creation has been queue and will be finished in a few seconds. A new revision will only be created if there's are changes."
+        );
     }
 
     async execute() {
