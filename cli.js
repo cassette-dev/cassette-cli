@@ -21,6 +21,9 @@ const args = yargs
                 string: true,
                 required: true,
             },
+            "revision-name": {
+                string: true,
+            },
             "command": {
                 string: true,
                 required: true,

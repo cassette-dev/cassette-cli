@@ -87,7 +87,12 @@ class ImportCommand {
 
         let revisionResponse;
         try {
-            revisionResponse = await this.client.post(["branches", branchResponse.body.branch.id, "revisions"], { json: {} })
+            revisionResponse = await this.client.post(
+                ["branches", branchResponse.body.branch.id, "revisions"],
+                {
+                    json: { name: this.options.revisionName },
+                }
+            )
         } catch (e) {
             this.ora.fail(`Failed to create new revision in branch ${branchResponse.body.branch.name}`)
             if (this.options.verbose) {
@@ -201,7 +206,7 @@ class ImportCommand {
         }
 
         this.ora.succeed(
-            "Revision creation has been queue and will be finished in a few seconds. A new revision will only be created if there's are changes."
+            "Revision creation has been queued and will be finished in a few seconds. A new revision will only be created if there's are changes."
         );
     }
 
