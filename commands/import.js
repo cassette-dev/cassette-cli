@@ -87,7 +87,7 @@ class ImportCommand {
 
         let revisionResponse;
         try {
-            revisionResponse = await this.client.post(["branches", branchResponse.body.branch.id, "revisions"])
+            revisionResponse = await this.client.post(["branches", branchResponse.body.branch.id, "revisions"], { json: {} })
         } catch (e) {
             this.ora.fail(`Failed to create new revision in branch ${branchResponse.body.branch.name}`)
             if (this.options.verbose) {
