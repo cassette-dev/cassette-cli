@@ -147,10 +147,10 @@ class ImportCommand {
 
             child.on("exit", (code) => {
                 if (code === 0) {
-                    this.ora.succeed("Test run succeeded.");
+                    this.ora.succeed("Test run succeeded");
                     resolve();
                 } else {
-                    this.ora.fail(`Command "${this.options.command}" returned with exit code ${code}.`)
+                    this.ora.fail(`Command "${this.options.command}" returned with exit code ${code}`)
                     this.ora.frame();
                     this.ora.clear();
                     console.error("\n  Command error output:");
@@ -164,7 +164,7 @@ class ImportCommand {
     assertHasRequestTransactions() {
         const stat = fs.statSync(this.bulkFile.name);
         if (stat.size === 0) {
-            this.ora.fail("Couldn't find any request transactions after test run. Make sure you have selected a test suite with integration tests.")
+            this.ora.fail("Couldn't find any request transactions after test run\n  Make sure you have selected a test suite with integration tests")
             yargs.exit(1);
         }
     }
@@ -184,7 +184,7 @@ class ImportCommand {
             });
             this.ora.succeed("Imported request transactions to cassette.")
         } catch (e) {
-            this.ora.fail(`Failed to upload recordings to revision ${this.revision.id} on branch ${this.options.branchName}.`)
+            this.ora.fail(`Failed to upload recordings to revision ${this.revision.id} on branch ${this.options.branchName}`)
             if (this.options.verbose) {
                 console.error(`[Error ${e.statusCode}]: ${e}`);
             }
@@ -198,7 +198,7 @@ class ImportCommand {
                 ["revisions", this.revision.id, "complete"],
             );
         } catch (e) {
-            this.ora.fail(`Failed to complete revision ${this.revision.id} on branch ${this.options.branchName}.`)
+            this.ora.fail(`Failed to complete revision ${this.revision.id} on branch ${this.options.branchName}`)
             if (this.options.verbose) {
                 console.error(`[Error ${e.statusCode}]: ${e}`);
             }
@@ -206,7 +206,7 @@ class ImportCommand {
         }
 
         this.ora.succeed(
-            "Revision creation has been queued and will be finished in a few seconds. A new revision will only be created if there's are changes."
+            "Revision creation has been queued and will be finished in a few seconds\n  A new revision will only be created if there's are changes"
         );
     }
 
@@ -256,7 +256,7 @@ class ImportCommand {
                 CASSETTE_BULK_FILE_SEPARATOR: bulkFileSeparator,
             });
         } catch (e) {
-            this.ora.fail("Failed to import documentation, encountered error during test run.")
+            this.ora.fail("Failed to import documentation, encountered error during test run")
             console.error(e);
             yargs.exit(1);
         }
