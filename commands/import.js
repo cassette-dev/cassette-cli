@@ -210,17 +210,43 @@ class ImportCommand {
         );
     }
 
+    async assertHasProjectWritePermissions() {
+        try {
+            const branchResponse = await this.client.get(
+                ["projects", this.options.projectId, "import-sanity-check"],
+            );
+            const canImport = "can_import" in branchResponse.body && branchResponse.body.can_import === true
+            if (!canImport) {
+                this.ora.fail(`You do not have permission to import revisions to project ${this.options.projectId}`);
+                yargs.exit(1);
+            }
+        } catch (e) {
+            this.ora.fail(`You do not have permission to import revisions to project ${this.options.projectId}`);
+            if (this.options.verbose) {
+                console.error(`[Error ${e.statusCode}]: ${e}`);
+            }
+            yargs.exit(1);
+
+        }
+    }
+
     async execute() {
-        this.ora.start(`Creating new revision for branch ${this.options.branchName}`);
-        this.revision = await this.createNewRevision();
+        if (this.options.verbose) {
+            this.ora.start("Checking project write permission");
+        }
+    
+        await this.assertHasProjectWritePermissions();
+
+        if (this.options.verbose) {
+            this.ora.succeed("Project write permission check successful");
+        }
+
         this.bulkFile = this.createBulkFile();
         const bulkFileSeparator = this.createBulkFileSeparator();
 
         if (this.options.verbose) {
             this.ora.succeed(`Created import file at: ${this.bulkFile.name}`);
         }
-
-        this.ora.succeed(`Created a new temporary revision for branch ${this.options.branchName}`);
 
         try {
             this.ora.start(`Running command: "${this.options.command}"`)
@@ -234,8 +260,12 @@ class ImportCommand {
             console.error(e);
             yargs.exit(1);
         }
+
         this.assertHasRequestTransactions();
-        this.ora.start("Importing request transactions to cassette.");
+        this.ora.start(`Creating new revision for branch ${this.options.branchName}`);
+        this.revision = await this.createNewRevision();
+        this.ora.succeed(`Created a new revision for branch ${this.options.branchName}`);
+        this.ora.start("Importing request transactions to cassette");
         await this.import();
         await this.completeRevision();
     }
